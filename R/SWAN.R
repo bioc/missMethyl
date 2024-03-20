@@ -115,7 +115,7 @@ SWAN.default <- function(data, verbose = FALSE){
       manifestName <- "IlluminaHumanMethylationEPICmanifest"
       
     } else if (annotation(data)["array"] == "IlluminaHumanMethylationEPICv2") {
-      cat("EPICv2\n")
+      cat("EPIC_V2\n")
       manifest <- IlluminaHumanMethylationEPICv2manifest::IlluminaHumanMethylationEPICv2manifest
       manifestName <- "IlluminaHumanMethylationEPICv2manifest"
     }

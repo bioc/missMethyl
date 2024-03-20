@@ -114,6 +114,10 @@ SWAN.default <- function(data, verbose = FALSE){
       manifest <- IlluminaHumanMethylationEPICmanifest::IlluminaHumanMethylationEPICmanifest
       manifestName <- "IlluminaHumanMethylationEPICmanifest"
       
+    } else if (annotation(data)["array"] == "IlluminaHumanMethylationEPICv2") {
+      cat("EPICv2\n")
+      manifest <- IlluminaHumanMethylationEPICv2manifest::IlluminaHumanMethylationEPICv2manifest
+      manifestName <- "IlluminaHumanMethylationEPICv2manifest"
     }
     
     CpG.counts <- rbind(data.frame(minfi::getProbeInfo(manifest, 

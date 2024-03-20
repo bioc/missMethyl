@@ -86,6 +86,8 @@ densityByProbeType <- function(data, legendPos = "top",
     manifest <- IlluminaHumanMethylation450kmanifest::IlluminaHumanMethylation450kmanifest
   } else if (annotation(data)["array"] == "IlluminaHumanMethylationEPIC") {
     manifest <- IlluminaHumanMethylationEPICmanifest::IlluminaHumanMethylationEPICmanifest
+  } else if (annotation(data)["array"] == "IlluminaHumanMethylationEPICv2") {
+    manifest <- IlluminaHumanMethylationEPICv2manifest::IlluminaHumanMethylationEPICv2manifest
   }
     probeTypes <- rbind(data.frame(minfi::getProbeInfo(manifest, 
                                                 type = "I")[, c("Name", 

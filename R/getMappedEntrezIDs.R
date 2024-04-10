@@ -115,7 +115,8 @@ getMappedEntrezIDs <- function(sig.cpg, all.cpg=NULL,
     }
     
     if(is.null(all.cpg)) {
-        all.cpg <- unique(flat.u$cpg)
+        # all.cpg <- unique(flat.u$cpg) <- EDITED BELOW
+      all.cpg <- unique(rownames(flat.u))
     } else {
         all.cpg <- as.character(all.cpg)
         all.cpg <- all.cpg[!is.na(all.cpg)]
@@ -123,13 +124,15 @@ getMappedEntrezIDs <- function(sig.cpg, all.cpg=NULL,
     }
     
     # remove CpGs from annotation that are not in all.cpg
-    m_all <- match(flat.u$cpg, all.cpg)
+    # m_all <- match(flat.u$cpg, all.cpg) <- EDITED BELOW
+    m_all <- match(rownames(flat.u), all.cpg)
     flat.u = flat.u[!is.na(m_all),]
     
     # map CpG sites to entrez gene id's
     sig.cpg <- unique(sig.cpg)
     
-    m1 <- match(flat.u$cpg,sig.cpg)
+    # m1 <- match(flat.u$cpg,sig.cpg) <- EDITED BELOW
+    m1 <- match(rownames(flat.u),sig.cpg)
     
     #eg.sig <- flat.u$entrezid[!is.na(m1)]
     if(any(grepl("ALL", genomic.features))){
@@ -144,7 +147,9 @@ getMappedEntrezIDs <- function(sig.cpg, all.cpg=NULL,
         stop("There are no genes annotated to the significant CpGs")
     }
     
-    m2 <- match(flat.u$cpg,all.cpg)
+    # m2 <- match(flat.u$cpg,all.cpg) <- EDITED BELOW
+    m2 <- match(rownames(flat.u),all.cpg)
+    
     eg.all <- flat.u$entrezid[!is.na(m2)]
     
     freq_genes <- table(eg.all)

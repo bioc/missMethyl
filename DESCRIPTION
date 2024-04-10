@@ -10,7 +10,8 @@ Maintainer: Belinda Phipson <phipson.b@wehi.edu.au>, Jovana
 Depends: 
     R (>= 3.6.0),
     IlluminaHumanMethylation450kanno.ilmn12.hg19,
-    IlluminaHumanMethylationEPICanno.ilm10b4.hg19
+    IlluminaHumanMethylationEPICanno.ilm10b4.hg19,
+    IlluminaHumanMethylationEPICv2anno.20a1.hg38
 Imports:
     AnnotationDbi, 
     BiasedUrn,
@@ -20,6 +21,7 @@ Imports:
     GO.db,
     IlluminaHumanMethylation450kmanifest,
     IlluminaHumanMethylationEPICmanifest,
+    IlluminaHumanMethylationEPICv2manifest,
     IRanges,
     limma,
     methods,

@@ -220,7 +220,8 @@ gsaregion <- function(regions, all.cpg=NULL, collection,
     }
     
     if(!is.null(all.cpg)){
-        anno <- anno[all.cpg,]
+        # anno <- anno[all.cpg,] --> EDITED THIS BELOW
+        anno <- anno[rownames(anno) %in% all.cpg, ]
     }
     
     cpgs <- GenomicRanges::GRanges(seqnames = anno$chr, 

@@ -204,7 +204,7 @@ goregion <- function(regions, all.cpg=NULL, collection=c("GO","KEGG"),
   # Takes into account probability of differential methylation based on
   # numbers of probes on array per gene
   # Jovana Maksimovic
-  # 26 April 2019. Last updated 18 June 2021.
+  # 26 April 2019. Last updated 1 May 2024.
 {
     array.type <- match.arg(toupper(array.type), c("450K","EPIC","EPIC_V2"))    
     collection <- match.arg(toupper(collection), c("GO","KEGG"))
@@ -222,6 +222,12 @@ goregion <- function(regions, all.cpg=NULL, collection=c("GO","KEGG"),
         stop("'ExonBnd' is not an annotated feature on 450K arrays,\n
              please remove it from your genomic.feature parameter\n
              specification.") 
+    }
+    
+    if(array.type == "EPIC_V2" & any(grepl("ExonBnd", genomic.features))){
+      stop("'ExonBnd' is not an annotated feature on EPIC_V2 arrays,\n
+           please remove it from your genomic.feature parameter\n
+           specification.") 
     }
   
   if(is.null(anno)){

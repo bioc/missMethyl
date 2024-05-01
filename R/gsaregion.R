@@ -189,7 +189,7 @@ gsaregion <- function(regions, all.cpg=NULL, collection,
     # Takes into account probability of differential methylation based on
     # numbers of probes on array per gene
     # Jovana Maksimovic
-    # 26 April 2019. Last updated 11 Setember 2020.
+    # 26 April 2019. Last updated 1 May 2024.
 {
     
     array.type <- match.arg(toupper(array.type), c("450K","EPIC","EPIC_V2"))    
@@ -209,6 +209,12 @@ gsaregion <- function(regions, all.cpg=NULL, collection,
            specification.") 
     }
     
+    if(array.type == "EPIC_V2" & any(grepl("ExonBnd", genomic.features))){
+      stop("'ExonBnd' is not an annotated feature on EPIC_V2 arrays,\n
+           please remove it from your genomic.feature parameter\n
+           specification.") 
+    }
+    
     if(is.null(anno)){
         if(array.type=="450K"){
             anno <- minfi::getAnnotation(IlluminaHumanMethylation450kanno.ilmn12.hg19::IlluminaHumanMethylation450kanno.ilmn12.hg19)
@@ -220,7 +226,6 @@ gsaregion <- function(regions, all.cpg=NULL, collection,
     }
     
     if(!is.null(all.cpg)){
-        # anno <- anno[all.cpg,] --> EDITED THIS BELOW
         anno <- anno[rownames(anno) %in% all.cpg, ]
     }
     

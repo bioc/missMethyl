@@ -179,6 +179,7 @@ gsameth <- function(sig.cpg, all.cpg=NULL, collection,
   if(!is.vector(sig.cpg))
     stop("Input CpG list is not a character vector")
   array.type <- match.arg(toupper(array.type),c("450K","EPIC", "EPIC_V2"))
+  
   genomic.features <- match.arg(genomic.features, c("ALL", "TSS200","TSS1500",
                                                     "Body", "1stExon","3'UTR",
                                                     "5'UTR","ExonBnd"), 
@@ -194,6 +195,14 @@ gsameth <- function(sig.cpg, all.cpg=NULL, collection,
            please remove it from your genomic.feature parameter
            specification.") 
   }
+  
+  # CODE I HAVE ADDED --------------------------------------------------------
+  if(array.type == "EPIC_V2" & any(grepl("ExonBnd", genomic.features))){
+    stop("'ExonBnd' is not an annotated feature on EPIC_V2 arrays,\n
+           please remove it from your genomic.feature parameter\n
+           specification.") 
+  }
+  # --------------------------------------------------------------------------
   
   # Get mapped entrez gene IDs from CpG probe names
   if(!is.null(anno)){

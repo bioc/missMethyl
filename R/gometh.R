@@ -201,7 +201,7 @@ gometh <- function(sig.cpg, all.cpg=NULL, collection=c("GO","KEGG"),
   # 28 January 2015. Last updated 1 September 2020.
   # EPIC functionality contributed by Andrew Y.F. Li Yim
 {
-  array.type <- match.arg(toupper(array.type), c("450K","EPIC", "EPIC_V2"))    
+  array.type <- match.arg(toupper(array.type), c("450K","EPIC", "EPIC_V2"))
   collection <- match.arg(toupper(collection), c("GO","KEGG"))
   genomic.features <- match.arg(genomic.features, c("ALL", "TSS200","TSS1500",
                                                     "Body", "1stExon","3'UTR",
@@ -218,6 +218,14 @@ gometh <- function(sig.cpg, all.cpg=NULL, collection=c("GO","KEGG"),
            please remove it from your genomic.feature parameter\n
            specification.") 
   }
+  
+  # CODE I HAVE ADDED --------------------------------------------------------
+  if(array.type == "EPIC_V2" & any(grepl("ExonBnd", genomic.features))){
+    stop("'ExonBnd' is not an annotated feature on EPIC_V2 arrays,\n
+           please remove it from your genomic.feature parameter\n
+           specification.") 
+  }
+  # --------------------------------------------------------------------------
    
   if(collection == "GO"){
     go <- .getGO()

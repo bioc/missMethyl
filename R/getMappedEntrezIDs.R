@@ -77,9 +77,8 @@
 #' @export getMappedEntrezIDs
 getMappedEntrezIDs <- function(sig.cpg, all.cpg=NULL, 
                                array.type=c("450K","EPIC","EPIC_V2"), anno=NULL, 
-                               genomic.features = c("ALL", "TSS200","TSS1500",
-                                                    "Body","1stExon","3'UTR",
-                                                    "5'UTR","ExonBnd"))
+                               genomic.features = c("ALL", "TSS200","TSS1500","Body",
+                                                    "1stExon","3'UTR","5'UTR","ExonBnd"))
     # From a list of CpG sites, obtain the Entrez Gene IDs that are used for 
     # testing pathway enrichment
     # Belinda Phipson & Jovana Maksimovic
@@ -106,6 +105,31 @@ getMappedEntrezIDs <- function(sig.cpg, all.cpg=NULL,
            please remove it from your genomic.feature parameter
            specification.") 
     }
+    
+    # CODE I HAVE ADDED --------------------------------------------------------
+    if(array.type == "EPIC_V2" & any(grepl("ExonBnd", genomic.features))){
+      stop("'ExonBnd' is not an annotated feature on EPIC_V2 arrays,\n
+           please remove it from your genomic.feature parameter\n
+           specification.") 
+    }
+    
+    if(array.type == "EPIC_V2" & any(grepl("1stExon", genomic.features))){
+      genomic.features[which(grepl("1stExon", genomic.features))] <- "exon_1"
+    }
+    
+    if(array.type == "EPIC_V2" & any(grepl("3'UTR", genomic.features))){
+      genomic.features[which(grepl("3'UTR", genomic.features))] <- "3UTR"
+    }
+    
+    if(array.type == "EPIC_V2" & any(grepl("5'UTR", genomic.features))){
+      genomic.features[which(grepl("5'UTR", genomic.features))] <- "5UTR"
+    }
+    
+    if(array.type == "EPIC_V2" & any(grepl("Body", genomic.features))){
+      genomic.features[which(grepl("Body", genomic.features))] <- "exon_2"
+      genomic.features <- c(genomic.features, paste0("exon_", 3:363))
+    }
+    # --------------------------------------------------------------------------
     
     # Get annotaton in appropriate format
     if(is.null(anno)){

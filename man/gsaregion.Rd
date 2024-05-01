@@ -8,7 +8,7 @@ gsaregion(
   regions,
   all.cpg = NULL,
   collection,
-  array.type = c("450K", "EPIC"),
+  array.type = c("450K", "EPIC", "EPIC_V2"),
   plot.bias = FALSE,
   prior.prob = TRUE,
   anno = NULL,
@@ -29,8 +29,8 @@ sites on the array.}
 \item{collection}{A list of user specified gene sets to test. Can also be a
 single character vector gene set. Gene identifiers must be Entrez Gene IDs.}
 
-\item{array.type}{The Illumina methylation array used. Options are "450K" or
-"EPIC". Defaults to "450K".}
+\item{array.type}{The Illumina methylation array used. Options are "450K", 
+"EPIC" or "EPIC_V2". Defaults to "450K".}
 
 \item{plot.bias}{Logical, if true a plot showing the bias due to the
 differing numbers of probes per gene will be displayed.}
@@ -95,7 +95,9 @@ multiple genes (this is NOT recommended).
 Genes associated with each CpG site are obtained from the annotation package
 \code{IlluminaHumanMethylation450kanno.ilmn12.hg19} if the array type is
 "450K". For the EPIC array, the annotation package
-\code{IlluminaHumanMethylationEPICanno.ilm10b4.hg19} is used. To use a
+\code{IlluminaHumanMethylationEPICanno.ilm10b4.hg19} is used. For the EPIC v2 
+array, the annotation package 
+\code{IlluminaHumanMethylationEPICv2anno.20a1.hg38} is used. To use a
 different annotation package, please supply it using the \code{anno}
 argument. 
 

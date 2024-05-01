@@ -35,6 +35,15 @@ of object created by `r BiocStyle::Biocpkg("minfi")`. For detecting
 differentially variable CpGs we recommend that the analysis is performed on 
 M-values. All analyses described here are performed at the CpG site level.
 
+## Analysis of Illumina MethylationEPIC v2.0 datasets
+
+The `r BiocStyle::Biocpkg("missMethyl")` package has been updated to support 
+Illumina's MethylationEPIC v2.0 beadchip. This array contains replicate probes 
+which map to the same CpG dinucleotides. We recommend filtering these replicates
+prior to analysis with the `r BiocStyle::Biocpkg("missMethyl")` package using 
+the `r BiocStyle::Biocpkg("DMRcate")` package.
+^^ maybe specify the functions this will impact instead???????
+
 # Reading data into R
 
 We will use the data in the `r BiocStyle::Biocpkg("minfiData")` package to 
@@ -61,6 +70,9 @@ targets <- read.metharray.sheet(baseDir)
 targets[,1:9]
 targets[,10:12]
 rgSet <- read.metharray.exp(targets = targets)
+# If using EPIC_V2, please run these lines:
+# annotation(rgSet)["array"] = "IlluminaHumanMethylationEPICv2"
+# annotation(rgSet)["annotation"] = "20a1.hg38"
 ```
 
 The data is now an `RGChannelSet` object and needs to be normalised and 
@@ -719,7 +731,8 @@ optionally, a character vector of all CpG sites tested. This is important to
 include if filtering of the CpGs has been performed prior to differential
 methylation analysis. If the `all.cpg` argument is omitted, all the CpGs on the 
 array are used as background. To change the array type, the `array.type` 
-argument can be specified as either "450K" or "EPIC". The default is "450K".
+argument can be specified as either "450K", "EPIC" or "EPIC_V2". The default is 
+"450K".
 
 If the `plot.bias` argument is `TRUE`, a figure showing the relationship
 between the probability of differential methylation and the number of probes per

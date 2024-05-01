@@ -198,7 +198,7 @@ gometh <- function(sig.cpg, all.cpg=NULL, collection=c("GO","KEGG"),
   # Takes into account probability of differential methylation based on
   # numbers of probes on array per gene
   # Belinda Phipson
-  # 28 January 2015. Last updated 1 September 2020.
+  # 28 January 2015. Last updated 1 May 2024.
   # EPIC functionality contributed by Andrew Y.F. Li Yim
 {
   array.type <- match.arg(toupper(array.type), c("450K","EPIC", "EPIC_V2"))
@@ -219,13 +219,11 @@ gometh <- function(sig.cpg, all.cpg=NULL, collection=c("GO","KEGG"),
            specification.") 
   }
   
-  # CODE I HAVE ADDED --------------------------------------------------------
   if(array.type == "EPIC_V2" & any(grepl("ExonBnd", genomic.features))){
     stop("'ExonBnd' is not an annotated feature on EPIC_V2 arrays,\n
            please remove it from your genomic.feature parameter\n
            specification.") 
   }
-  # --------------------------------------------------------------------------
    
   if(collection == "GO"){
     go <- .getGO()

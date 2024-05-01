@@ -578,22 +578,6 @@ topRUV <- function (fitsum, number = 10, sort.by = c("p","F.p"), p.BH = 1){
   
   sort.by <- match.arg(sort.by)
   
-  # THIS SECTION THROWS ERROR ON NEWER R VERSIONS ------------------------------
-  # ord <- switch(sort.by, p = order(tab[,grepl("p_", colnames(tab))], 
-  #                                  decreasing = FALSE), 
-  #               F.p = order(tab$F.p, decreasing=FALSE))
-  # 
-  # if (nrow(tab) < number)
-  #   number <- nrow(tab)
-  # 
-  # if (number < 1)
-  #   return(data.frame())
-  # 
-  # top <- ord[1:number]
-  # 
-  # tab[top,]
-  # ----------------------------------------------------------------------------
-  # REPLACEMENT CODE FOR THIS SECTION
   if (sort.by == "p") {
     tab_sort <- dplyr::arrange(tab, dplyr::pick(dplyr::starts_with("p_")))
   } else {

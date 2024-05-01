@@ -77,13 +77,15 @@
 #' @export getMappedEntrezIDs
 getMappedEntrezIDs <- function(sig.cpg, all.cpg=NULL, 
                                array.type=c("450K","EPIC","EPIC_V2"), anno=NULL, 
-                               genomic.features = c("ALL", "TSS200","TSS1500","Body",
-                                                    "1stExon","3'UTR","5'UTR","ExonBnd"))
+                               genomic.features = c("ALL", "TSS200","TSS1500",
+                                                    "Body","1stExon","3'UTR",
+                                                    "5'UTR","ExonBnd"))
     # From a list of CpG sites, obtain the Entrez Gene IDs that are used for 
     # testing pathway enrichment
     # Belinda Phipson & Jovana Maksimovic
     # 10 February 2016
     # Updated 12 May 2020 to allow restricting sig.cpg by genomic features
+    # Updated 1 May 2024 to allow use of Illumina MethylationEPIC v2.0 beadchip
 {
     # check input
     sig.cpg <- as.character(sig.cpg)
@@ -106,7 +108,6 @@ getMappedEntrezIDs <- function(sig.cpg, all.cpg=NULL,
            specification.") 
     }
     
-    # CODE I HAVE ADDED --------------------------------------------------------
     if(array.type == "EPIC_V2" & any(grepl("ExonBnd", genomic.features))){
       stop("'ExonBnd' is not an annotated feature on EPIC_V2 arrays,\n
            please remove it from your genomic.feature parameter\n
@@ -129,7 +130,6 @@ getMappedEntrezIDs <- function(sig.cpg, all.cpg=NULL,
       genomic.features[which(grepl("Body", genomic.features))] <- "exon_2"
       genomic.features <- c(genomic.features, paste0("exon_", 3:363))
     }
-    # --------------------------------------------------------------------------
     
     # Get annotaton in appropriate format
     if(is.null(anno)){
@@ -139,7 +139,6 @@ getMappedEntrezIDs <- function(sig.cpg, all.cpg=NULL,
     }
     
     if(is.null(all.cpg)) {
-        # all.cpg <- unique(flat.u$cpg) <- EDITED BELOW
       all.cpg <- unique(rownames(flat.u))
     } else {
         all.cpg <- as.character(all.cpg)
@@ -148,14 +147,12 @@ getMappedEntrezIDs <- function(sig.cpg, all.cpg=NULL,
     }
     
     # remove CpGs from annotation that are not in all.cpg
-    # m_all <- match(flat.u$cpg, all.cpg) <- EDITED BELOW
     m_all <- match(rownames(flat.u), all.cpg)
     flat.u = flat.u[!is.na(m_all),]
     
     # map CpG sites to entrez gene id's
     sig.cpg <- unique(sig.cpg)
     
-    # m1 <- match(flat.u$cpg,sig.cpg) <- EDITED BELOW
     m1 <- match(rownames(flat.u),sig.cpg)
     
     #eg.sig <- flat.u$entrezid[!is.na(m1)]
@@ -171,7 +168,6 @@ getMappedEntrezIDs <- function(sig.cpg, all.cpg=NULL,
         stop("There are no genes annotated to the significant CpGs")
     }
     
-    # m2 <- match(flat.u$cpg,all.cpg) <- EDITED BELOW
     m2 <- match(rownames(flat.u),all.cpg)
     
     eg.all <- flat.u$entrezid[!is.na(m2)]

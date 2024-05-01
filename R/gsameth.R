@@ -173,7 +173,7 @@ gsameth <- function(sig.cpg, all.cpg=NULL, collection,
   # based on numbers of probes on array per gene.
   # Belinda Phipson
   # 10 February 2016
-  # Updated 21 March 2019
+  # Updated 1 May 2024
 {
   
   if(!is.vector(sig.cpg))
@@ -196,13 +196,11 @@ gsameth <- function(sig.cpg, all.cpg=NULL, collection,
            specification.") 
   }
   
-  # CODE I HAVE ADDED --------------------------------------------------------
   if(array.type == "EPIC_V2" & any(grepl("ExonBnd", genomic.features))){
     stop("'ExonBnd' is not an annotated feature on EPIC_V2 arrays,\n
            please remove it from your genomic.feature parameter\n
            specification.") 
   }
-  # --------------------------------------------------------------------------
   
   # Get mapped entrez gene IDs from CpG probe names
   if(!is.null(anno)){

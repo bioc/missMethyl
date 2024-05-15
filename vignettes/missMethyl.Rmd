@@ -35,14 +35,14 @@ of object created by `r BiocStyle::Biocpkg("minfi")`. For detecting
 differentially variable CpGs we recommend that the analysis is performed on 
 M-values. All analyses described here are performed at the CpG site level.
 
-## Analysis of Illumina MethylationEPIC v2.0 datasets
+## Analysis of Illumina MethylationEPIC v2.0 beadchip datasets
 
 The `r BiocStyle::Biocpkg("missMethyl")` package has been updated to support 
 Illumina's MethylationEPIC v2.0 beadchip. This array contains replicate probes 
 which map to the same CpG dinucleotides. We recommend filtering these replicates
 prior to analysis with the `r BiocStyle::Biocpkg("missMethyl")` package using 
-the `r BiocStyle::Biocpkg("DMRcate")` package.
-^^ maybe specify the functions this will impact instead???????
+the `r BiocStyle::Biocpkg("DMRcate")` package. An example of this is shown in 
+this vignette.
 
 # Reading data into R
 
@@ -70,13 +70,25 @@ targets <- read.metharray.sheet(baseDir)
 targets[,1:9]
 targets[,10:12]
 rgSet <- read.metharray.exp(targets = targets)
-# If using EPIC_V2, please run these lines:
-# annotation(rgSet)["array"] = "IlluminaHumanMethylationEPICv2"
-# annotation(rgSet)["annotation"] = "20a1.hg38"
 ```
 
 The data is now an `RGChannelSet` object and needs to be normalised and 
 converted to a `MethylSet` object.
+
+## Annotation for Illumina MethylationEPIC v2.0 beadchip datasets
+
+When using MethylationEPIC v2.0 datasets, the array and annotation details in 
+the `RGChannelSet` object must be set manually.
+
+```{r epicv2-annotation, eval=FALSE}
+### This code is not run within this vignette
+
+# If using EPIC_V2, please run these lines:
+annotation(rgSet)["array"] = "IlluminaHumanMethylationEPICv2"
+annotation(rgSet)["annotation"] = "20a1.hg38"
+
+### End of not run
+```
 
 # Subset-quantile within array normalization (SWAN)
 
@@ -162,6 +174,25 @@ legend("topleft",legend=c("Cancer","Normal"),pch=16,cex=1.2,col=1:2)
 An MDS plot (Figure \@ref(fig:mdsplot)) is a good sanity check to make sure
 samples cluster together according to the main factor of interest, in
 this case, cancer and normal.
+
+## Filtering replicate probes in Illumina MethylationEPIC v2.0 beadchip datasets
+
+The MethylationEPIC v2.0 array contains replicate probes which map to the same 
+CpG dinucleotides. We recommend filtering these replicate probes using the 
+`r BiocStyle::Biocpkg("DMRcate")` package as shown below. Please see the 
+[`r BiocStyle::Biocpkg("DMRcate")` EPICv2 vignette](https://bioconductor.org/packages/release/bioc/vignettes/DMRcate/inst/doc/EPICv2.pdf) for more details.
+
+```{r filter-replicate-probes_Mval, eval=FALSE}
+### This code is not run within this vignette
+
+# For EPIC_V2, please run these lines to remove replicate and non-cg probes:
+# remove non-cg probes
+Mval <- Mval[grepl("^cg", rownames(Mval)),]
+# select replicate probes with best sensitivity
+Mval <- DMRcate::rmPosReps(Mval, filter.strategy="sensitivity")
+
+### End of not run
+```
 
 # Testing for differential methylation using limma
 
@@ -272,11 +303,26 @@ differential methylation analysis on the original data using *RUV-inverse*
 (by default) and the ECPs. For simplicity, we are ignoring the paired
 nature of the **cancer** and **normal** samples in this example.
 
-```{r diffmeth2}
+```{r diffmeth2_part1}
 # get M-values for ALL probes
 meth <- getMeth(mSet)
 unmeth <- getUnmeth(mSet)
 M <- log2((meth + 100)/(unmeth + 100))
+```
+
+```{r filter-replicate-probes_M, eval=FALSE}
+### This code is not run within this vignette
+
+# For EPIC_V2, please run these lines to remove replicate and non-cg probes:
+# remove non-cg probes
+M <- M[grepl("^cg", rownames(M)),]
+# select replicate probes with best sensitivity
+M <- DMRcate::rmPosReps(M, filter.strategy="sensitivity")
+
+### End of not run
+```
+
+```{r diffmeth2_part2}
 # setup the factor of interest
 grp <- factor(targets$status, labels=c(0,1))
 # extract Illumina negative control data

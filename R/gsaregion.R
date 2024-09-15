@@ -226,7 +226,11 @@ gsaregion <- function(regions, all.cpg=NULL, collection,
     }
     
     if(!is.null(all.cpg)){
-        anno <- anno[rownames(anno) %in% all.cpg, ]
+        if (array.type=="EPIC_V2") {
+          anno <- anno[rownames(anno) %in% all.cpg, ]
+        } else {
+          anno <- anno[all.cpg,]
+        }
     }
     
     cpgs <- GenomicRanges::GRanges(seqnames = anno$chr, 

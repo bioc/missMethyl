@@ -139,7 +139,11 @@ getMappedEntrezIDs <- function(sig.cpg, all.cpg=NULL,
     }
     
     if(is.null(all.cpg)) {
-      all.cpg <- unique(rownames(flat.u))
+      if (array.type == "EPIC_V2") {
+        all.cpg <- unique(rownames(flat.u))
+      } else {
+        all.cpg <- unique(flat.u$cpg)
+      }
     } else {
         all.cpg <- as.character(all.cpg)
         all.cpg <- all.cpg[!is.na(all.cpg)]
@@ -147,13 +151,21 @@ getMappedEntrezIDs <- function(sig.cpg, all.cpg=NULL,
     }
     
     # remove CpGs from annotation that are not in all.cpg
-    m_all <- match(rownames(flat.u), all.cpg)
+    if (array.type == "EPIC_V2") {
+      m_all <- match(rownames(flat.u), all.cpg)
+    } else {
+      m_all <- match(flat.u$cpg, all.cpg)
+    }
     flat.u = flat.u[!is.na(m_all),]
     
     # map CpG sites to entrez gene id's
     sig.cpg <- unique(sig.cpg)
     
-    m1 <- match(rownames(flat.u),sig.cpg)
+    if (array.type == "EPIC_V2") {
+      m1 <- match(rownames(flat.u),sig.cpg)
+    } else {
+      m1 <- match(flat.u$cpg,sig.cpg)
+    }
     
     #eg.sig <- flat.u$entrezid[!is.na(m1)]
     if(any(grepl("ALL", genomic.features))){
@@ -168,7 +180,11 @@ getMappedEntrezIDs <- function(sig.cpg, all.cpg=NULL,
         stop("There are no genes annotated to the significant CpGs")
     }
     
-    m2 <- match(rownames(flat.u),all.cpg)
+    if (array.type == "EPIC_V2") {
+      m2 <- match(rownames(flat.u),all.cpg)
+    } else {
+      m2 <- match(flat.u$cpg,all.cpg)
+    }
     
     eg.all <- flat.u$entrezid[!is.na(m2)]
     

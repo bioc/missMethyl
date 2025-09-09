@@ -192,6 +192,7 @@
 #' topGSA(kegg, n=5)
 #' }
 #' 
+#' @importFrom GenomeInfoDb seqlevelsStyle<-
 #' @export goregion
 goregion <- function(regions, all.cpg=NULL, collection=c("GO","KEGG"), 
                      array.type = c("450K","EPIC","EPIC_V2"), plot.bias=FALSE, 
